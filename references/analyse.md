@@ -15,9 +15,10 @@ chain: requested chain
 window_start: YYYY-MM-DD
 window_end: YYYY-MM-DD
 coverage_rule: at least the prior 365 days; extend backward only when the target has fewer than 10 eligible winner records, and state the extension
+research_date: YYYY-MM-DD
 ```
 
-Use at least one year ending on the research date. Enumerate all in-window events in the datasource, including online and in-person events where the datasource covers them.
+Use at least one year ending on the research date. Enumerate all in-window events in the datasource, including online and in-person events where the datasource covers them. Record a retrieval log with query/filter, source endpoint or page, retrieval date, raw result count, and disposition. Then publish a coverage-reconciliation table: events expected, events searched, award pages found, project records found, qualifying award records, unique eligible projects, and exclusions by reason. Missing, inaccessible, or unsearchable data is a coverage gap, never a zero.
 
 ## 2. Use a reproducible inclusion ladder
 
@@ -30,7 +31,7 @@ Assign every project one tier. Do not merge tiers before reporting counts.
 | C | The project was an overall winner/finalist and has explicit target-domain and requested-chain evidence in its project record | Context set only; never mix with Tier A in primary percentages |
 | D | The project merely mentions the target | Mention set only; do not call it a winner or use it in winner percentages |
 
-For an exact sponsor track, query sponsor winners first. For a domain, use keyword retrieval plus prize retrieval, then manually validate the project description and award. Capture both positive and negative filtering decisions when they affect a count.
+For an exact sponsor track, query sponsor winners first. For a domain, use keyword retrieval plus prize retrieval, then manually validate the project description and award. Capture every inclusion and material exclusion with a one-sentence decision, evidence URL, and retrieval date. Normalize each project to a stable `project_id` (canonical project URL, then repository URL, then normalized name + event); retain all award records, but calculate project-level prevalence on unique `project_id`s. Flag multi-award projects explicitly so repeated awards cannot inflate a trend.
 
 ## 3. Chain filtering
 
@@ -45,6 +46,8 @@ Classify chain relationship from explicit project evidence:
 
 Primary analysis includes `primary` and `material` records. List `incidental` and `unknown` records separately. If fewer than five primary/material winner records exist, do not manufacture percentages; state the scarcity.
 
+Attach an evidence grade to every chain and track-integration classification: `E1` = official award/project page states it; `E2` = first-party repository/demo corroborates it; `E3` = reputable secondary record only; `E0` = unknown. Only E1/E2 may establish `primary` or `material`; report E3 as unverified and exclude it from the primary population.
+
 ## 4. Build the raw project ledger
 
 Include every eligible project in a table with:
@@ -58,6 +61,9 @@ Include every eligible project in a table with:
 - project tagline;
 - concise factual description;
 - source reliability/coverage note.
+- stable project_id and multi-award/duplicate flag;
+- source URL(s), retrieval date, and evidence grade;
+- explicit inclusion/exclusion decision and reason.
 
 Then add a per-project section for every Tier A/B record. Each section must state, using source-backed language:
 
@@ -72,7 +78,7 @@ Do not blur a project’s technical implementation into an inferred motive.
 
 ## 5. Tagging and trend extraction
 
-Create a project-level codebook before counting. Use concise, observable tags such as `wallet-security`, `fraud-detection`, `agentic-trading`, `liquidity-optimization`, `consumer-social`, `developer-tooling`, `knowledge-graph`, `physical-world-settlement`, or a target-specific equivalent.
+Create and publish a project-level codebook before counting. Every code must have an operational definition, minimum source evidence, and examples/non-examples from the ledger. Use concise, observable tags such as `wallet-security`, `fraud-detection`, `agentic-trading`, `liquidity-optimization`, `consumer-social`, `developer-tooling`, `knowledge-graph`, `physical-world-settlement`, or a target-specific equivalent. Apply the locked codebook to all eligible unique projects. If a code changes, log the change and recode the entire population; never add a category only after seeing its frequency.
 
 For every tag, provide:
 
@@ -101,12 +107,15 @@ Required analysis slices:
 5. **Intersection trend:** Which problem + mechanism pairs recur?
 6. **Recency trend:** Compare the most recent half of the window with the earlier half. Show raw counts and do not claim a trend when either cohort has fewer than three records.
 7. **Prize-rank trend:** Compare first-place records with all other ranked winners separately.
+8. **Concentration test:** For every candidate trend, report distinct projects/N, percentage, and status. `signature` requires at least 3 distinct projects and at least 30% of the primary population. If N < 10, label all statuses exploratory even when this rule is met. All other observations are `signals`, not signatures.
 
 For every reported pattern, distinguish:
 
 - `Observed`: direct count from the ledger.
 - `Interpretation`: a bounded description of the repeated project shape.
 - `Not established`: claims the data cannot support.
+
+If the datasource exposes a complete, comparable entrant or non-winner population under the same coverage rule, add a separate contrast table with winner prevalence, comparator prevalence, percentage-point difference, and prevalence ratio. Name the comparator population and its denominator. Never construct a comparator from search results; absent such data, do not use the terms lift, odds, driver, or probability.
 
 ## 6. Build a data-derived rating model
 
@@ -115,7 +124,7 @@ End the report with this exact block. It is the only permitted rubric for `track
 ```markdown
 ## TRACKMAX_RATE_MODEL
 
-model_version: 1
+model_version: 2
 population: Tier A/B primary+material records only (N=<integer>)
 score_definition: historical winner-set similarity, not probability of winning
 missing_evidence_rule: unmet
@@ -126,13 +135,14 @@ missing_evidence_rule: unmet
 
 formula: score = 10 * sum(weight for satisfied predicates) / sum(all weights)
 rounding: one decimal, conventional half-up
+predicate_support: distinct project IDs and source links supporting each predicate
 ```
 
 Rules for predicates:
 
-- Use 4–8 predicates only.
+- Use 4–8 predicates only. If fewer than four defensible signatures exist, use fewer and label the model `exploratory`; never pad it with generic criteria.
 - Each predicate must be observable from an idea document without guessing.
-- Derive predicates from the most recurrent, discriminating project-level patterns, not generic quality criteria.
+- Derive predicates only from signatures that pass the concentration test (or documented hard eligibility gates), not generic quality criteria or weak signals.
 - A predicate can describe an intersection, such as `wallet-security + risk action`, only if it recurs in the ledger.
 - Set `weight` equal to `prevalence_pct` by default. Alter it only to avoid double-counting logically nested predicates, and explicitly show the calculation.
 - Do not include prize qualifications unless the final winner records demonstrate the attribute or the target’s official rules make it a hard eligibility gate. Hard gates get a binary predicate with documented source.
@@ -140,13 +150,13 @@ Rules for predicates:
 
 ## Required report shape
 
-1. Research frame and coverage
+1. Research frame, retrieval log, and coverage reconciliation
 2. Datasource method and limitations
 3. Prize/track definitions, quoted fully where the datasource requires it
-4. Full project ledger
+4. Full award/project ledger and exclusion log
 5. Per-project analysis
-6. Non-overlapping distributions
-7. Overlapping trend matrix
-8. Intersection and recency analysis
-9. Observed patterns / bounded interpretations / not established
+6. Codebook and non-overlapping distributions
+7. Overlapping trend matrix and concentration results
+8. Intersection, recency, prize-rank, and valid comparator analysis
+9. Signatures / signals / bounded interpretations / not established
 10. `TRACKMAX_RATE_MODEL`
