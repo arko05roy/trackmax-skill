@@ -1,0 +1,4 @@
+interface:
+  display_name: "TrackMax"
+  short_description: "Reverse-engineer a hackathon track from winner data"
+  default_prompt: "Use trackmax/analyse with a datasource, track/domain, and chain."
