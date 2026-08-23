@@ -1,4 +1,4 @@
-# `trackmax/rate` protocol
+# `trackmax-rate` protocol
 
 ## Goal
 

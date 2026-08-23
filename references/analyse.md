@@ -2,7 +2,9 @@
 
 ## Goal
 
-Produce a forensic, project-level map of what has won the requested track/domain on the requested chain. The result measures the historical winner set; it does not produce generic advice or pretend that a winner-only sample estimates causal win probability.
+Produce a detailed, plain-English developer cheat sheet of what has won the requested track/domain on the requested chain. It should name the actual products, explain what each made, and show the winner patterns and how they changed. The result measures the historical winner set; it does not produce generic advice or pretend that winner-only data proves why projects win.
+
+Write like you are briefing a developer who wants to understand the track quickly. Prefer familiar words, short sentences, bullets, and concrete examples. Define unavoidable research terms in one plain sentence. Do not use business-school language, inflated prose, or unexplained jargon.
 
 ## 1. Lock the research frame
 
@@ -14,11 +16,11 @@ target: exact sponsor, prize, or domain term
 chain: requested chain
 window_start: YYYY-MM-DD
 window_end: YYYY-MM-DD
-coverage_rule: at least the prior 365 days; extend backward only when the target has fewer than 10 eligible winner records, and state the extension
+coverage_rule: target the prior 4 years; use every available eligible record in that period, and use at least the prior 2 years when the datasource has that coverage. State any unavailable years or coverage gaps.
 research_date: YYYY-MM-DD
 ```
 
-Use at least one year ending on the research date. Enumerate all in-window events in the datasource, including online and in-person events where the datasource covers them. Record a retrieval log with query/filter, source endpoint or page, retrieval date, raw result count, and disposition. Then publish a coverage-reconciliation table: events expected, events searched, award pages found, project records found, qualifying award records, unique eligible projects, and exclusions by reason. Missing, inaccessible, or unsearchable data is a coverage gap, never a zero.
+Research the last four years ending on the research date. If the datasource only covers part of that period, use every available year but do not shrink a covered window below two years. Only use a shorter window when fewer than two years exist, and say why in plain English. Enumerate all in-window events in the datasource, including online and in-person events where the datasource covers them. Record a retrieval log with query/filter, source endpoint or page, retrieval date, raw result count, and disposition. Then publish a coverage-reconciliation table: events expected, events searched, award pages found, project records found, qualifying award records, unique eligible projects, and exclusions by reason. Missing, inaccessible, or unsearchable data is a coverage gap, never a zero.
 
 ## 2. Use a reproducible inclusion ladder
 
@@ -65,7 +67,7 @@ Include every eligible project in a table with:
 - source URL(s), retrieval date, and evidence grade;
 - explicit inclusion/exclusion decision and reason.
 
-Then add a per-project section for every Tier A/B record. Each section must state, using source-backed language:
+Then add a per-project section for every Tier A/B record. Start with `What they made` in simple English, then state, using source-backed language:
 
 1. The user/problem context.
 2. The core mechanism.
@@ -78,7 +80,7 @@ Do not blur a project’s technical implementation into an inferred motive.
 
 ## 5. Tagging and trend extraction
 
-Create and publish a project-level codebook before counting. Every code must have an operational definition, minimum source evidence, and examples/non-examples from the ledger. Use concise, observable tags such as `wallet-security`, `fraud-detection`, `agentic-trading`, `liquidity-optimization`, `consumer-social`, `developer-tooling`, `knowledge-graph`, `physical-world-settlement`, or a target-specific equivalent. Apply the locked codebook to all eligible unique projects. If a code changes, log the change and recode the entire population; never add a category only after seeing its frequency.
+Create and publish a project-level tag guide before counting. A tag guide is a short list of labels used the same way for every project. Every tag needs a plain definition, minimum source evidence, and examples/non-examples from the ledger. Use concise, observable tags such as `wallet-security`, `fraud-detection`, `agentic-trading`, `liquidity-optimization`, `consumer-social`, `developer-tooling`, `knowledge-graph`, `physical-world-settlement`, or a target-specific equivalent. Apply the locked tag guide to all eligible unique projects. If a tag changes, log the change and retag the full population; never add a category only after seeing its frequency.
 
 For every tag, provide:
 
@@ -105,7 +107,7 @@ Required analysis slices:
 3. **Outcome trend:** What does the project cause, decide, secure, optimize, or enable?
 4. **Track-usage trend:** How is the named track/domain technically used?
 5. **Intersection trend:** Which problem + mechanism pairs recur?
-6. **Recency trend:** Compare the most recent half of the window with the earlier half. Show raw counts and do not claim a trend when either cohort has fewer than three records.
+6. **How it changed:** Compare each available year, then compare the newest two years with the older years. Name the projects behind each change, show raw counts, and do not claim a trend when either comparison group has fewer than three records.
 7. **Prize-rank trend:** Compare first-place records with all other ranked winners separately.
 8. **Concentration test:** For every candidate trend, report distinct projects/N, percentage, and status. `signature` requires at least 3 distinct projects and at least 30% of the primary population. If N < 10, label all statuses exploratory even when this rule is met. All other observations are `signals`, not signatures.
 
@@ -119,7 +121,7 @@ If the datasource exposes a complete, comparable entrant or non-winner populatio
 
 ## 6. Build a data-derived rating model
 
-End the report with this exact block. It is the only permitted rubric for `trackmax/rate`.
+End the report with this exact block. It is the only permitted rubric for `trackmax-rate`.
 
 ```markdown
 ## TRACKMAX_RATE_MODEL
@@ -150,13 +152,13 @@ Rules for predicates:
 
 ## Required report shape
 
-1. Research frame, retrieval log, and coverage reconciliation
-2. Datasource method and limitations
-3. Prize/track definitions, quoted fully where the datasource requires it
-4. Full award/project ledger and exclusion log
-5. Per-project analysis
-6. Codebook and non-overlapping distributions
-7. Overlapping trend matrix and concentration results
-8. Intersection, recency, prize-rank, and valid comparator analysis
-9. Signatures / signals / bounded interpretations / not established
+1. What this cheat sheet covers (research frame, time window, retrieval log, and coverage reconciliation)
+2. Data gaps and limits (plain English)
+3. Track/prize definition
+4. Every winning product (full award/project ledger and exclusion log)
+5. Product breakdowns: what each team made, how it worked, and why it fit the track
+6. Tag guide and simple category counts
+7. Repeated patterns: problems, mechanisms, user outcomes, and technical track use
+8. How the winners evolved over the years, with named products behind the change
+9. Strong repeated patterns, weaker signals, and what the data cannot prove
 10. `TRACKMAX_RATE_MODEL`

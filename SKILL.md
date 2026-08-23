@@ -1,28 +1,29 @@
 ---
 name: trackmax
-description: Reverse-engineer a hackathon track or domain from a named winner datasource, then score an idea only against the resulting historical pattern. Use for track-specific winner analysis or evidence-bound track-fit scoring; not for generic product advice.
+description: Build a plain-English, long-horizon winner cheat sheet for a hackathon track or domain. Use for track-specific winner analysis; not for generic product advice or idea scoring.
 ---
 
 # Trackmax
 
-Trackmax has two explicit modes. The objective is **track hijacking**: establish what projects historically won a narrowly defined track/domain and evaluate resemblance to that evidence. Do not turn either mode into generic startup, UX, or hackathon advice.
+Trackmax is a **track-hijacking cheat sheet** for builders: establish what projects historically won a narrowly defined track/domain, what they actually made, and how the winner patterns changed over time. Do not turn it into generic startup, UX, or hackathon advice.
 
 ## Invocation and inputs
 
-Use one of these forms:
+By default, a request that says only `trackmax` means **analyse**. Infer the datasource, target, and chain from the surrounding request when they are supplied. If one of these essentials is missing, ask one short question for the missing information. Do not require the user to write `trackmax/analyse`.
+
+Use these forms when the user wants to be explicit:
 
 ```text
 trackmax/analyse <datasource> <track-or-domain> <chain>
-trackmax/rate <path-to-name-analysis.md> <path-to-idea.md>
 ```
 
-`analyse` requires all three inputs. A datasource may be a connected research source or an installed skill such as `$ethglobal:ethglobal-skills` or Colosseum Copilot. The track/domain is the exact prize sponsor/track when available (for example `The Graph`) or a defined domain (for example `SocialFi`). The chain is an inclusion filter, not decorative metadata.
+`analyse` needs a datasource, target, and chain. A datasource may be a connected research source or an installed skill such as `$ethglobal:ethglobal-skills` or Colosseum Copilot. The track/domain is the exact prize sponsor/track when available (for example `The Graph`) or a defined domain (for example `SocialFi`). The chain is an inclusion filter, not decorative metadata.
 
-Read [the analysis protocol](references/analyse.md) before running `analyse`. Read [the rating protocol](references/rate.md) before running `rate`.
+Read [the analysis protocol](references/analyse.md) before running `analyse`.
 
 ## Non-negotiable evidence rules
 
-- Do not claim that a pattern causes wins when only winner-only data is available. Call it a **winner-set prevalence** or **historical similarity signal**.
+- Do not claim that a pattern causes wins when only winner-only data is available. In plain English, call it a repeated winner pattern or historical similarity signal.
 - Never substitute generic recommendations for project-level analysis.
 - Keep the exact raw project record, award, event, year, source link, chain evidence, and inclusion tier for every included project.
 - Every percentage must state its denominator and whether categories overlap.
@@ -35,16 +36,4 @@ Read [the analysis protocol](references/analyse.md) before running `analyse`. Re
 
 Write exactly one durable report named `[name]-analysis.md`, using a lowercase kebab-case `name` derived from the target (for example `the-graph-analysis.md`). The report is an evidence artifact, not a proposal. It must contain the complete project ledger, per-project analysis, trend matrices, percentages, recency analysis, limitations, and a `TRACKMAX_RATE_MODEL` block specified in the analysis protocol.
 
-The prose conclusion may describe recurring project archetypes and intersections, but must not say what the user should build.
-
-### `trackmax/rate`
-
-Read the analysis report and idea document. Score only the observable predicates and weights in that report's `TRACKMAX_RATE_MODEL`. Do not add a personal rubric, judge novelty, reward polished writing, or penalize an idea for factors absent from the model.
-
-If the inputs are valid, the final answer must contain exactly one token in this format:
-
-```text
-7.4/10
-```
-
-No explanation, heading, markdown, or rationale may accompany the score. If evidence in the idea document is missing, mark the relevant predicates unmet; do not infer hidden implementation.
+Write for developers, not business analysts. Use short sentences and explain technical or research terms the first time they appear. Make the report easy to skim: name the products, say what each one made and how it worked, then show the repeated patterns and how those patterns evolved. The prose conclusion may describe recurring project archetypes and intersections, but must not say what the user should build.
