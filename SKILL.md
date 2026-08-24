@@ -5,7 +5,7 @@ description: Build a plain-English, long-horizon winner cheat sheet for a hackat
 
 # Trackmax
 
-Trackmax is a **track-hijacking cheat sheet** for builders: establish what projects historically won a narrowly defined track/domain, what they actually made, and how the winner patterns changed over time. Do not turn it into generic startup, UX, or hackathon advice.
+Trackmax is a **track-hijacking cheat sheet** for builders: establish what projects historically won a narrowly defined track/domain, what they actually made, how winner patterns changed over time, and which patterns were emerging, accelerating, mature, crowded, mutating, fading, or re-emerging at each point. Do not turn it into generic startup, UX, or hackathon advice.
 
 ## Invocation and inputs
 
@@ -34,6 +34,6 @@ Read [the analysis protocol](references/analyse.md) before running `analyse`.
 
 ### `trackmax/analyse`
 
-Write exactly one durable report named `[name]-analysis.md`, using a lowercase kebab-case `name` derived from the target (for example `the-graph-analysis.md`). The report is an evidence artifact, not a proposal. It must contain the complete project ledger, per-project analysis, trend matrices, percentages, recency analysis, limitations, and a `TRACKMAX_RATE_MODEL` block specified in the analysis protocol.
+Write exactly one durable report named `[name]-analysis.md`, using a lowercase kebab-case `name` derived from the target (for example `the-graph-analysis.md`). The report is an evidence artifact, not a proposal. It must contain the complete project ledger, per-project analysis, micro-trend ledger, temporal trend matrices, cohort comparisons, timing assessments, percentages, recency analysis, limitations, and a `TRACKMAX_RATE_MODEL` block specified in the analysis protocol.
 
-Write for developers, not business analysts. Use short sentences and explain technical or research terms the first time they appear. Make the report easy to skim: name the products, say what each one made and how it worked, then show the repeated patterns and how those patterns evolved. The prose conclusion may describe recurring project archetypes and intersections, but must not say what the user should build.
+Write for developers, not business analysts. Use short sentences and explain technical or research terms the first time they appear. Make the report easy to skim: name the products, say what each one made and how it worked, then show the repeated patterns, micro-trends, mutations, and timing states behind those patterns. The prose conclusion may describe recurring project archetypes and intersections, but must not say what the user should build.
