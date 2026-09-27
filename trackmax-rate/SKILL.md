@@ -1,36 +1,21 @@
 ---
 name: trackmax-rate
-description: Score a hackathon idea against the evidence model in a Trackmax cheat sheet. Use only when an existing Trackmax analysis report and an idea are supplied; not for generic idea reviews.
+description: Independently rate a hackathon idea against a supplied or independently researched winner corpus, verified prize rules, and current track trends. Use when a builder wants best/base/worst outcomes, a track-direction assessment, a course recommendation, and a transparent final rating.
 ---
 
 # Trackmax Rate
 
-Score an idea only against the `TRACKMAX_RATE_MODEL` in a completed Trackmax analysis report. This is a historical winner-pattern similarity score, not a prediction, product review, or general hackathon score.
+Trackmax Rate is a **standalone analyst review for a fresh context window**. It evaluates the exact idea supplied against historical winners, current track direction, prize criteria, feasibility, and the idea's memorable demo potential. It does not depend on the earlier Trackmax conversation and does not promise a win.
 
-## Inputs
+## Run the protocol
 
-You need both:
+1. Read [the complete rating protocol and agent prompts](references/rate.md). Freeze the supplied material into one packet; mark missing rules, corpus, or constraints `unknown` rather than assuming other chat context.
+2. For each candidate prize track, run two independent research tasks: a historical-fit analyst and a trajectory/counterevidence analyst. Give both the same packet; do not show either agent the other's findings.
+3. For every Web3 idea, each agent independently loads and queries both `$ethglobal-skills` and `$colosseum-copilot`, regardless of target chain, and uses the actual web-search tool at least eight times. Keep the datasets separate and verify important claims against first-party sources.
+4. Validate eligibility, reconcile conflicting agent findings, rate the idea and track, and report best/base/worst cases, the strongest next move, the evidence limits, and the final score.
 
-1. A valid `[name]-analysis.md` Trackmax cheat sheet with a complete `TRACKMAX_RATE_MODEL`, a nonzero population, and project/source support for every predicate.
-2. An idea document, or a clear description of the proposed project.
+## Rating contract
 
-If either input is missing, malformed, or lacks a usable model, ask only for the missing or corrected input. Never invent a fallback rubric.
+The final `0–10` rating is a disclosed strategic-fit score, **not a probability**. A likelihood-style outlook must remain qualitative unless complete, comparable entrant data supports a carefully bounded historical base rate. Winner-only data cannot establish a personal probability of winning. Do not claim an outcome is certain; label the most supportable outlook and its confidence.
 
-## Score the idea
-
-1. Read the model's population, predicates, required evidence, weights, formula, missing-evidence rule, and project/source support.
-2. Check the model before scoring. It is invalid if a non-gate predicate lacks supporting project IDs and source links, has fewer than three supporting projects, or its count and prevalence do not reconcile to the population. Ask only for a corrected report.
-3. Mark a predicate met only when the idea explicitly states the exact evidence the model requires. Vague claims, future aspirations, and generic technology mentions are not enough.
-4. Do not infer implementation details, users, chain use, track integration, or outcomes that are not stated in the idea.
-5. Apply the report's formula exactly. An unmet hard gate contributes zero; do not add another penalty.
-6. Round only at the final step using the report's rounding rule.
-
-## Output
-
-When the inputs are valid, respond with exactly one line and nothing else:
-
-```text
-<one-decimal-number>/10
-```
-
-Examples: `0.0/10`, `6.4/10`, `10.0/10`.
+If the idea or candidate track is missing, ask only for that input. If the winner corpus or rules are missing, research them independently; ask only if the edition or another decision-critical fact cannot be verified. If raw winner data is supplied without a rating model, derive a model only from that evidence under the protocol; never invent a fallback rubric.

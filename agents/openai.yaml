@@ -1,4 +1,4 @@
 interface:
   display_name: "TrackMax"
-  short_description: "Build a developer cheat sheet from winner data"
-  default_prompt: "Use trackmax to analyse a hackathon track or domain from winner data."
+  short_description: "Research hackathon prizes and optimize for at least one win"
+  default_prompt: "Use Trackmax to compare hackathon prize paths and recommend an evidence-led strategy."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Trackmax Rate"
+  short_description: "Independently rate a hackathon idea against winners, rules, and current trends"
+  default_prompt: "Use Trackmax Rate to assess the supplied idea and track from a fresh context; return evidence, trend direction, best/base/worst scenarios, and a caveated strategic-fit rating."

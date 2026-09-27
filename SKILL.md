@@ -1,39 +1,32 @@
 ---
 name: trackmax
-description: Build a plain-English, long-horizon winner cheat sheet for a hackathon track or domain. Use for track-specific winner analysis; not for generic product advice or idea scoring.
+description: Research hackathon winners, compare prize paths, and recommend an evidence-led strategy to maximize the chance of winning at least one prize. Use for hackathon track/prize analysis, winner research, and strategy for events with or without tracks.
 ---
 
 # Trackmax
 
-Trackmax is a **track-hijacking cheat sheet** for builders: establish what projects historically won a narrowly defined track/domain, what they actually made, how winner patterns changed over time, and which patterns were emerging, accelerating, mature, crowded, mutating, fading, or re-emerging at each point. Do not turn it into generic startup, UX, or hackathon advice.
+Trackmax is a senior-analyst workflow for **maximizing the chance of winning at least one prize**, not for chasing first place at any cost. Count every eligible award, including a lower-ranked or small cash prize such as $10; do not filter out a prize for being too small unless the user sets a floor. It treats prize selection as a greedy, evidence-led optimization problem: find the strongest feasible path to any award, then look for legitimate ways to cover additional prizes. It does not claim that an LLM can originate genuinely novel ideas on demand; its strength is research, comparison, and pressure-testing. Human taste and original insight remain valuable inputs.
 
-## Invocation and inputs
+## Choose the workflow
 
-By default, a request that says only `trackmax` means **analyse**. Infer the datasource, target, and chain from the surrounding request when they are supplied. If one of these essentials is missing, ask one short question for the missing information. Do not require the user to write `trackmax/analyse`.
+- **Hackathon with tracks/prizes:** Get the complete track and prize list, official rules, and any known build constraints. Read [the strategy protocol](references/strategy.md), [the subagent protocol](references/subagents.md), and [the research-source adapters](references/research-sources.md). Research every track independently, then compare the results centrally.
+- **Hackathon without tracks:** Read the same three protocols. Delegate one investigation to ecosystem/winner history and another to high-value keywords and current priorities, then synthesize both.
+- **One track/domain, historical analysis only:** Use `trackmax/analyse <datasource> <track-or-domain> <chain>` and read [the analysis protocol](references/analyse.md). This produces historical evidence, not a project recommendation.
 
-Use these forms when the user wants to be explicit:
+Infer the intended workflow from the request. Ask only for missing information that materially changes eligibility or the recommendation; otherwise state reasonable assumptions and proceed. If the user asks for ideas, provide evidence-backed directions and multiple useful keywords as leads—not claims of originality.
 
-```text
-trackmax/analyse <datasource> <track-or-domain> <chain>
-```
+## Operating principles
 
-`analyse` needs a datasource, target, and chain. A datasource may be a connected research source or an installed skill such as `$ethglobal:ethglobal-skills` or Colosseum Copilot. The track/domain is the exact prize sponsor/track when available (for example `The Graph`) or a defined domain (for example `SocialFi`). The chain is an inclusion filter, not decorative metadata.
+- Behave like a skeptical senior analyst: separate evidence, inference, and unknowns; look for counterevidence; disclose missing coverage; correct weak assumptions without politeness padding.
+- Study the combination that can matter: past winners in this event or ecosystem, official prize criteria, gaps in the ecosystem, current winner patterns, sponsor priorities, and what can actually be built and demonstrated.
+- Do not limit research to the target chain. For Web3 projects, run ETHGlobal and Colosseum as separate source lanes and look for transferable product patterns, keywords, and capabilities in the other ecosystem; validate any claimed local gap with target-specific sources.
+- Treat memorability and showoff value as a major strategic factor. Seek a concrete, surprising live demonstration that makes people think, “Our ecosystem can do that?” A technically simple project can qualify; complexity alone is not a differentiator. Never call this a guaranteed winning formula.
+- Winner-only records show what won, not what failed or why it won. Calculate award rates only when a complete comparable entrant denominator is available. Never invent probabilities or imply correlation is causation.
+- Treat “gaps” as research hypotheses, not proof of unmet demand. Treat trend and keyword frequency as evidence of attention, not evidence of a winning idea.
+- Prefer one coherent product that genuinely satisfies multiple prize criteria when the evidence and build scope support it. Do not stretch a weak fit across tracks to inflate coverage.
 
-Read [the analysis protocol](references/analyse.md) before running `analyse`.
+## Deliverable
 
-## Non-negotiable evidence rules
+For a strategy request, present the primary path, why it leads, the concrete demo/memorability opportunity, useful keywords, evidence and uncertainty, and the strongest alternatives not selected. Compare alternatives with observed counts, denominators, eligibility, prize values/ranks, and disclosed scoring assumptions where available. State why each was passed over and what evidence could change the decision. Do not present a relative score as a win probability.
 
-- Do not claim that a pattern causes wins when only winner-only data is available. In plain English, call it a repeated winner pattern or historical similarity signal.
-- Never substitute generic recommendations for project-level analysis.
-- Keep the exact raw project record, award, event, year, source link, chain evidence, and inclusion tier for every included project.
-- Every percentage must state its denominator and whether categories overlap.
-- If the datasource cannot support a required filter, state the limitation in the analysis and exclude unsupported numerical claims. Do not silently fill gaps from memory.
-- Do not discard inconvenient winner records to make a trend look stronger.
-
-## Output contracts
-
-### `trackmax/analyse`
-
-Write exactly one durable report named `[name]-analysis.md`, using a lowercase kebab-case `name` derived from the target (for example `the-graph-analysis.md`). The report is an evidence artifact, not a proposal. It must contain the complete project ledger, per-project analysis, micro-trend ledger, temporal trend matrices, cohort comparisons, timing assessments, percentages, recency analysis, limitations, and a `TRACKMAX_RATE_MODEL` block specified in the analysis protocol.
-
-Write for developers, not business analysts. Use short sentences and explain technical or research terms the first time they appear. Make the report easy to skim: name the products, say what each one made and how it worked, then show the repeated patterns, micro-trends, mutations, and timing states behind those patterns. The prose conclusion may describe recurring project archetypes and intersections, but must not say what the user should build.
+For a historical-only analysis, follow its existing report contract in [the analysis protocol](references/analyse.md). For every workflow, link claims to sources and label what is observed, interpreted, or unknown.

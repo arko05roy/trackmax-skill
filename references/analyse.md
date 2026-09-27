@@ -229,23 +229,23 @@ Add a final trend map that separates historical repetition from current momentum
 
 Use raw counts and denominators beside every percentage. This map must name the projects supporting each row. It should make clear whether a pattern is common-but-crowded, rare-but-accelerating, mature-and-stable, or newly mutating.
 
-## 6. Build a data-derived rating model
+## 6. Build a data-derived historical-fit model
 
-End the report with this exact block. It is the only permitted rubric for `trackmax-rate`.
+End the report with this exact block. It supplies the reproducible historical-fit component used by the standalone `trackmax-rate` assessment; it is not, by itself, an overall rating or a forecast. Trackmax Rate separately validates eligibility, current track direction, official sponsor alignment, demo memorability, and feasibility.
 
 ```markdown
 ## TRACKMAX_RATE_MODEL
 
 model_version: 2
 population: Tier A/B primary+material records only (N=<integer>)
-score_definition: historical winner-set similarity, not probability of winning
+score_definition: historical winner-set similarity only; not an overall rating or probability of winning
 missing_evidence_rule: unmet
 
 | id | observable predicate | evidence required in idea document | winners with predicate | denominator | prevalence_pct | weight |
 |---|---|---|---:|---:|---:|---:|
 | P1 | ... | ... | ... | ... | ... | ... |
 
-formula: score = 10 * sum(weight for satisfied predicates) / sum(all weights)
+formula: historical_fit = 10 * sum(weight for satisfied predicates) / sum(all weights)
 rounding: one decimal, conventional half-up
 predicate_support: distinct project IDs and source links supporting each predicate
 ```
