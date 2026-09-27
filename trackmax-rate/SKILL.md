@@ -11,7 +11,7 @@ Trackmax Rate is a **standalone analyst review for a fresh context window**. It 
 
 1. Read [the complete rating protocol and agent prompts](references/rate.md). Freeze the supplied material into one packet; mark missing rules, corpus, or constraints `unknown` rather than assuming other chat context.
 2. For each candidate prize track, run two independent research tasks: a historical-fit analyst and a trajectory/counterevidence analyst. Give both the same packet; do not show either agent the other's findings.
-3. For every Web3 idea, each agent independently loads and queries both `$ethglobal-skills` and `$colosseum-copilot`, regardless of target chain, and uses the actual web-search tool at least eight times. Keep the datasets separate and verify important claims against first-party sources.
+3. For every Web3 idea, each agent independently loads and queries both `$ethglobal-skills` and `$colosseum-copilot`, regardless of target chain. For ETHGlobal events, prizes, projects, finalists, and award placements, use `$ethglobal-skills` as the structured-record source; never use `web_search` to find or fill those records. Capture all available 1st-, 2nd-, and 3rd-place outcomes, and use `web_fetch` on URLs returned by the skill when first-party verification is needed. Keep the datasets separate. Each agent still makes at least eight focused `web_search` calls for independent current, technical, counterexample, or non-ETHGlobal context.
 4. Validate eligibility, reconcile conflicting agent findings, rate the idea and track, and report best/base/worst cases, the strongest next move, the evidence limits, and the final score.
 
 ## Rating contract

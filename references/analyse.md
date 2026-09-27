@@ -16,11 +16,11 @@ target: exact sponsor, prize, or domain term
 chain: requested chain
 window_start: YYYY-MM-DD
 window_end: YYYY-MM-DD
-coverage_rule: target the prior 4 years; use every available eligible record in that period, and use at least the prior 2 years when the datasource has that coverage. State any unavailable years or coverage gaps.
+coverage_rule: target the prior 4 years; use every available eligible 1st-, 2nd-, and 3rd-place award outcome (plus official unranked awards) in that period. State unavailable ranks, years, and coverage gaps.
 research_date: YYYY-MM-DD
 ```
 
-Research the last four years ending on the research date. If the datasource only covers part of that period, use every available year but do not shrink a covered window below two years. Only use a shorter window when fewer than two years exist, and say why in plain English. Enumerate all in-window events in the datasource, including online and in-person events where the datasource covers them. Record a retrieval log with query/filter, source endpoint or page, retrieval date, raw result count, and disposition. Then publish a coverage-reconciliation table: events expected, events searched, award pages found, project records found, qualifying award records, unique eligible projects, and exclusions by reason. Missing, inaccessible, or unsearchable data is a coverage gap, never a zero.
+Research the last four years ending on the research date. If the datasource only covers part of that period, use every available year but do not shrink a covered window below two years. Only use a shorter window when fewer than two years exist, and say why in plain English. Enumerate all in-window events in the datasource, including online and in-person events where the datasource covers them. Record a retrieval log with query/filter, source endpoint or page, retrieval date, raw result count, and disposition. Then publish a coverage-reconciliation table: events expected, events searched, award pages found, project records found, qualifying award outcomes by rank, unique eligible projects, and exclusions by reason. Missing, inaccessible, or unsearchable data is a coverage gap, never a zero. For ETHGlobal, retrieve event, prize, project, and placement data through `$ethglobal-skills`; do not use `web_search` to enumerate or replace that dataset.
 
 ## 2. Use a reproducible inclusion ladder
 
@@ -28,12 +28,12 @@ Assign every project one tier. Do not merge tiers before reporting counts.
 
 | Tier | Include when | Purpose |
 |---|---|---|
-| A | The project won the exact target sponsor/track prize | Primary winner set |
-| B | The project won a prize whose official title/qualification directly names the target domain, on the requested chain | Domain-adjacent winner set |
-| C | The project was an overall winner/finalist and has explicit target-domain and requested-chain evidence in its project record | Context set only; never mix with Tier A in primary percentages |
+| A | The project received an official 1st-, 2nd-, or 3rd-place award (or explicitly unranked award) for the exact target sponsor/track prize | Primary award-recipient set; retain exact rank on every award row |
+| B | The project received an official 1st-, 2nd-, or 3rd-place award for a prize whose title/qualification directly names the target domain, on the requested chain | Domain-adjacent award-recipient set; retain exact rank |
+| C | The project was an overall winner/finalist or recognized project without one of the target awards above, and has explicit target-domain and requested-chain evidence | Context set only; never mix with Tier A/B in primary prevalence |
 | D | The project merely mentions the target | Mention set only; do not call it a winner or use it in winner percentages |
 
-For an exact sponsor track, query sponsor winners first. For a domain, use keyword retrieval plus prize retrieval, then manually validate the project description and award. Capture every inclusion and material exclusion with a one-sentence decision, evidence URL, and retrieval date. Normalize each project to a stable `project_id` (canonical project URL, then repository URL, then normalized name + event); retain all award records, but calculate project-level prevalence on unique `project_id`s. Flag multi-award projects explicitly so repeated awards cannot inflate a trend.
+For every exact track/prize, retrieve **all available ranks**, not only first place or a generic `winner` subset. Explicitly inspect 1st, 2nd, 3rd, and unranked placements in the source response; if a rank is absent or the API caps results, record the gap and retrieve further using supported prize/sponsor/event filters. For ETHGlobal, use `$ethglobal-skills` only for structured event, prize, project, and placement discovery; never substitute `web_search`. For other datasources, use their documented query filters. For a domain, use keyword retrieval plus prize retrieval, then manually validate the project description and award. Capture every inclusion and material exclusion with a one-sentence decision, evidence URL, and retrieval date. Normalize each project to a stable `project_id` (canonical project URL, then repository URL, then normalized name + event); retain every award row, but calculate project-level prevalence on unique `project_id`s. Keep rank-specific outcome counts and flag multi-award projects explicitly so repeated awards cannot inflate a trend.
 
 ## 3. Chain filtering
 
@@ -46,7 +46,7 @@ Classify chain relationship from explicit project evidence:
 | incidental | The target chain is mentioned but not functionally important |
 | unknown | The source does not establish chain usage |
 
-Primary analysis includes `primary` and `material` records. List `incidental` and `unknown` records separately. If fewer than five primary/material winner records exist, do not manufacture percentages; state the scarcity.
+Primary analysis includes `primary` and `material` records. List `incidental` and `unknown` records separately. If fewer than five primary/material award-recipient projects exist, do not manufacture percentages; state the scarcity and still complete the event, track, rank, and per-project analysis. This evidence threshold is not a gate on Trackmax's event-level prize comparison or greedy recommendation.
 
 Attach an evidence grade to every chain and track-integration classification: `E1` = official award/project page states it; `E2` = first-party repository/demo corroborates it; `E3` = reputable secondary record only; `E0` = unknown. Only E1/E2 may establish `primary` or `material`; report E3 as unverified and exclude it from the primary population.
 
@@ -57,7 +57,7 @@ Include every eligible project in a table with:
 - project name and source hyperlink;
 - event and event type (online/IRL if available);
 - date/year;
-- award text verbatim;
+- award text verbatim and official award rank (`1st`, `2nd`, `3rd`, `unranked`, or `unknown`);
 - tier;
 - chain relationship label and direct evidence;
 - project tagline;
@@ -109,7 +109,7 @@ Required analysis slices:
 5. **Intersection trend:** Which problem + mechanism pairs recur?
 6. **How it changed:** Compare each available year, then compare the newest two years with the older years. Name the projects behind each change, show raw counts, and do not claim a trend when either comparison group has fewer than three records.
 7. **Prize-rank trend:** Compare first-place records with all other ranked winners separately.
-8. **Concentration test:** For every candidate trend, report distinct projects/N, percentage, and status. `signature` requires at least 3 distinct projects and at least 30% of the primary population. If N < 10, label all statuses exploratory even when this rule is met. All other observations are `signals`, not signatures.
+8. **Concentration test:** For every candidate trend, report distinct projects/N, percentage when supported, award-rank distribution, and status. `signature` requires at least 3 distinct projects and at least 30% of the primary population. If N < 10, label all statuses exploratory even when this rule is met. All other observations are `signals`, not signatures. If fewer than 3 projects exist, report descriptive case evidence and each rank separately rather than suppressing analysis; do not claim a recurring pattern.
 
 For every reported pattern, distinguish:
 
@@ -236,18 +236,18 @@ End the report with this exact block. It supplies the reproducible historical-fi
 ```markdown
 ## TRACKMAX_RATE_MODEL
 
-model_version: 2
-population: Tier A/B primary+material records only (N=<integer>)
-score_definition: historical winner-set similarity only; not an overall rating or probability of winning
+model_version: 3
+population: Tier A/B primary+material award-recipient projects across 1st/2nd/3rd and official unranked placements (N=<integer>)
+score_definition: historical award-recipient pattern similarity across covered placements only; not an overall rating or probability of winning
 missing_evidence_rule: unmet
 
-| id | observable predicate | evidence required in idea document | winners with predicate | denominator | prevalence_pct | weight |
+| id | observable predicate | evidence required in idea document | award-recipient projects with predicate | denominator | prevalence_pct | weight |
 |---|---|---|---:|---:|---:|---:|
 | P1 | ... | ... | ... | ... | ... | ... |
 
 formula: historical_fit = 10 * sum(weight for satisfied predicates) / sum(all weights)
 rounding: one decimal, conventional half-up
-predicate_support: distinct project IDs and source links supporting each predicate
+predicate_support: distinct project IDs, source links, and covered award ranks supporting each predicate
 ```
 
 Rules for predicates:
@@ -271,7 +271,7 @@ For each supplementary signal record: date, event, source URL, source type, exac
 1. What this cheat sheet covers (research frame, time window, retrieval log, and coverage reconciliation)
 2. Data gaps and limits (plain English)
 3. Track/prize definition
-4. Every winning product (full award/project ledger and exclusion log)
+4. Every ranked award recipient and finalist in scope (full award/project ledger with 1st/2nd/3rd outcomes and exclusion log)
 5. Product breakdowns: what each team made, how it worked, and why it fit the track
 6. Micro-trend ledger and tag guide
 7. Repeated patterns: problems, mechanisms, user outcomes, and technical track use

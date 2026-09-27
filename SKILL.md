@@ -1,6 +1,6 @@
 ---
 name: trackmax
-description: Research hackathon winners, compare prize paths, and recommend an evidence-led strategy to maximize the chance of winning at least one prize. Use for hackathon track/prize analysis, winner research, and strategy for events with or without tracks.
+description: Map a hackathon's complete prize menu, evaluate every track, and greedily choose the strongest feasible path to at least one award. Use for event strategy, prize-track comparison, and winner-history research even when historical project data is sparse.
 ---
 
 # Trackmax
@@ -9,7 +9,7 @@ Trackmax is a senior-analyst workflow for **maximizing the chance of winning at 
 
 ## Choose the workflow
 
-- **Hackathon with tracks/prizes:** Get the complete track and prize list, official rules, and any known build constraints. Read [the strategy protocol](references/strategy.md), [the subagent protocol](references/subagents.md), and [the research-source adapters](references/research-sources.md). Research every track independently, then compare the results centrally.
+- **Hackathon with tracks/prizes:** Get the complete event prize menu, official rules, and known build constraints. Include all award outcomes at 1st, 2nd, and 3rd place when offered. Read [the strategy protocol](references/strategy.md), [the subagent protocol](references/subagents.md), and [the research-source adapters](references/research-sources.md). Evaluate every track independently, then greedily build the strongest credible prize path across the event.
 - **Hackathon without tracks:** Read the same three protocols. Delegate one investigation to ecosystem/winner history and another to high-value keywords and current priorities, then synthesize both.
 - **One track/domain, historical analysis only:** Use `trackmax/analyse <datasource> <track-or-domain> <chain>` and read [the analysis protocol](references/analyse.md). This produces historical evidence, not a project recommendation.
 
@@ -23,6 +23,9 @@ Infer the intended workflow from the request. Ask only for missing information t
 - Treat memorability and showoff value as a major strategic factor. Seek a concrete, surprising live demonstration that makes people think, “Our ecosystem can do that?” A technically simple project can qualify; complexity alone is not a differentiator. Never call this a guaranteed winning formula.
 - Winner-only records show what won, not what failed or why it won. Calculate award rates only when a complete comparable entrant denominator is available. Never invent probabilities or imply correlation is causation.
 - Treat “gaps” as research hypotheses, not proof of unmet demand. Treat trend and keyword frequency as evidence of attention, not evidence of a winning idea.
+- Optimize at the event/prize level, not for similarity to a handful of projects. A sparse historical corpus lowers confidence in history-derived patterns; it never blocks the all-track comparison, eligibility review, or greedy prize-coverage recommendation. Continue using official criteria, prize terms, demo value, and stated build constraints, and label unknowns instead of treating them as zero.
+- For ETHGlobal event, prize, award-rank, or project records, use `$ethglobal-skills` as the retrieval source; do not use `web_search` to find or enumerate ETHGlobal records. Use its returned official/first-party URLs with `web_fetch` when verification is needed. Reserve web search for separate current or cross-ecosystem context.
+- Treat 1st, 2nd, and 3rd place as distinct recorded award outcomes for the same prize/track. Any official awarded placement can meet the default “at least one prize” objective; placement ranks are not three separate track targets.
 - Prefer one coherent product that genuinely satisfies multiple prize criteria when the evidence and build scope support it. Do not stretch a weak fit across tracks to inflate coverage.
 
 ## Deliverable
